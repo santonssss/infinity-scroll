@@ -1,0 +1,16 @@
+{
+  "book_list": "本のリスト",
+  "initial_value": "初期値",
+  "avg_likes": "平均いいね数",
+  "avg_reviews": "平均レビュー数",
+  "loading": "読み込み中...",
+  "table": {
+    "number": "#",
+    "isbn": "ISBN",
+    "title": "タイトル",
+    "authors": "著者",
+    "publisher": "出版社",
+    "likes": "いいね",
+    "reviews": "レビュー"
+  }
+}

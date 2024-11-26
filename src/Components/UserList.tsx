@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { generateBooks } from "./GeneraterFakeData";
 import ExpandedBookDetails from "./ExpandedBookDetails";
-
+import { useTranslation } from "react-i18next";
 interface Book {
   index: number;
   isbn: string;
@@ -23,6 +23,7 @@ const UserList: React.FC = () => {
     null
   );
 
+  const { t, i18n } = useTranslation();
   const reloadBooks = () => {
     setLoading(true);
     const newBooks = generateBooks(startSeed, 1, likes, reviews);
@@ -57,13 +58,15 @@ const UserList: React.FC = () => {
   const handleRowClick = (index: number) => {
     setExpandedBookIndex(expandedBookIndex === index ? null : index);
   };
-
+  const changeLanguage = async (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
   return (
     <div className="container my-5">
-      <h1 className="text-center mb-4">Список книг</h1>
+      <h1 className="text-center mb-4">{(t as any)("book_list")}</h1>
 
       <div className="form-group">
-        <label>Начальное значение</label>
+        <label>{(t as any)("initial_value")}</label>
         <div className="d-flex align-items-center">
           <input
             type="number"
@@ -77,7 +80,7 @@ const UserList: React.FC = () => {
       </div>
 
       <div className="form-group">
-        <label>Среднее количество лайков</label>
+        <label>{(t as any)("avg_likes")}</label>
         <div className="d-flex align-items-center">
           <input
             type="range"
@@ -95,7 +98,7 @@ const UserList: React.FC = () => {
       </div>
 
       <div className="form-group">
-        <label>Среднее количество отзывов</label>
+        <label>{(t as any)("avg_reviews")}</label>
         <div className="d-flex align-items-center">
           <input
             type="range"
@@ -111,7 +114,9 @@ const UserList: React.FC = () => {
           <span className="ml-2">{reviews}</span>
         </div>
       </div>
-
+      <button onClick={() => changeLanguage("en")}>English</button>
+      <button onClick={() => changeLanguage("ru")}>Русский</button>
+      <button onClick={() => changeLanguage("ja")}>日本語</button>
       <div
         className="table-responsive"
         id="book-table"
@@ -131,13 +136,13 @@ const UserList: React.FC = () => {
         <table className="table table-bordered table-striped">
           <thead>
             <tr>
-              <th>#</th>
-              <th>ISBN</th>
-              <th>Название</th>
-              <th>Автор(ы)</th>
-              <th>Издатель</th>
-              <th>Лайки</th>
-              <th>Отзывы</th>
+              <th>{(t as any)("table.number")}</th>
+              <th>{(t as any)("table.isbn")}</th>
+              <th>{(t as any)("table.title")}</th>
+              <th>{(t as any)("table.authors")}</th>
+              <th>{(t as any)("table.publisher")}</th>
+              <th>{(t as any)("table.likes")}</th>
+              <th>{(t as any)("table.reviews")}</th>
             </tr>
           </thead>
           <tbody>
@@ -163,7 +168,9 @@ const UserList: React.FC = () => {
             ))}
           </tbody>
         </table>
-        {loading && <div className="text-center py-3">Загружаем...</div>}
+        {loading && (
+          <div className="text-center py-3">{(t as any)("loading")}</div>
+        )}
       </div>
     </div>
   );

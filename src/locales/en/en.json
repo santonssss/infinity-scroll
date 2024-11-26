@@ -1,0 +1,16 @@
+{
+  "book_list": "Book List",
+  "initial_value": "Initial Value",
+  "avg_likes": "Average Likes",
+  "avg_reviews": "Average Reviews",
+  "loading": "Loading...",
+  "table": {
+    "number": "#",
+    "isbn": "ISBN",
+    "title": "Title",
+    "authors": "Authors",
+    "publisher": "Publisher",
+    "likes": "Likes",
+    "reviews": "Reviews"
+  }
+}
