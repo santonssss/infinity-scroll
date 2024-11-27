@@ -4,6 +4,7 @@
   "avg_likes": "平均いいね数",
   "avg_reviews": "平均レビュー数",
   "loading": "読み込み中...",
+  "SelectLanguage": "言語を選択してください",
   "table": {
     "number": "#",
     "isbn": "ISBN",
@@ -11,6 +12,8 @@
     "authors": "著者",
     "publisher": "出版社",
     "likes": "いいね",
-    "reviews": "レビュー"
+    "reviews": "レビュー",
+    "genre": "ジャンル",
+    "releaseDate": "発売日"
   }
 }

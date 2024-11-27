@@ -4,6 +4,7 @@
   "avg_likes": "Среднее количество лайков",
   "avg_reviews": "Среднее количество отзывов",
   "loading": "Загружаем...",
+  "SelectLanguage": "Выберите язык",
   "table": {
     "number": "#",
     "isbn": "ISBN",
@@ -11,6 +12,8 @@
     "authors": "Автор(ы)",
     "publisher": "Издатель",
     "likes": "Лайки",
-    "reviews": "Отзывы"
+    "reviews": "Отзывы",
+    "genre": "жанр",
+    "releaseDate": "Дата релиза"
   }
 }

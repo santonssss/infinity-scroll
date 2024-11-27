@@ -2,14 +2,17 @@ import React, { useState, useEffect } from "react";
 import { generateBooks } from "./GeneraterFakeData";
 import ExpandedBookDetails from "./ExpandedBookDetails";
 import { useTranslation } from "react-i18next";
+
 interface Book {
   index: number;
   isbn: string;
   title: string;
   authors: string;
   publisher: string;
-  likes: string;
-  reviews: string;
+  likes: string; // Представляем как строку
+  reviews: string; // Представляем как строку (для отображения количества)
+  genre: string;
+  releaseDate: string;
 }
 
 const UserList: React.FC = () => {
@@ -24,9 +27,10 @@ const UserList: React.FC = () => {
   );
 
   const { t, i18n } = useTranslation();
+
   const reloadBooks = () => {
     setLoading(true);
-    const newBooks = generateBooks(startSeed, 1, likes, reviews);
+    const newBooks = generateBooks(startSeed, 1, likes, reviews, i18n.language);
     setBooks(newBooks);
     setPage(2);
     setLoading(false);
@@ -35,7 +39,13 @@ const UserList: React.FC = () => {
   const loadMoreBooks = () => {
     if (loading) return;
     setLoading(true);
-    const newBooks = generateBooks(startSeed, page, likes, reviews);
+    const newBooks = generateBooks(
+      startSeed,
+      page,
+      likes,
+      reviews,
+      i18n.language
+    );
     setBooks((prevBooks) => [...prevBooks, ...newBooks]);
     setPage(page + 1);
     setLoading(false);
@@ -58,65 +68,84 @@ const UserList: React.FC = () => {
   const handleRowClick = (index: number) => {
     setExpandedBookIndex(expandedBookIndex === index ? null : index);
   };
+
   const changeLanguage = async (lng: string) => {
     i18n.changeLanguage(lng);
   };
+
   return (
     <div className="container my-5">
       <h1 className="text-center mb-4">{(t as any)("book_list")}</h1>
 
-      <div className="form-group">
-        <label>{(t as any)("initial_value")}</label>
-        <div className="d-flex align-items-center">
-          <input
-            type="number"
-            value={startSeed}
-            onChange={(e) =>
-              handleFilterChange("startSeed", Number(e.target.value))
-            }
-            className="form-control"
-          />
+      {/* Filters Section */}
+      <div className="row mb-4">
+        <div className="col-md-4">
+          <div className="form-group">
+            <label>{(t as any)("initial_value")}</label>
+            <input
+              type="number"
+              className="form-control"
+              value={startSeed}
+              onChange={(e) =>
+                handleFilterChange("startSeed", Number(e.target.value))
+              }
+            />
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="form-group">
+            <label>{(t as any)("avg_likes")}</label>
+            <input
+              type="range"
+              className="form-control-range"
+              min="0"
+              max="5"
+              step="0.1"
+              value={likes}
+              onChange={(e) =>
+                handleFilterChange("likes", Number(e.target.value))
+              }
+            />
+            <span>{likes}</span>
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="form-group">
+            <label>{(t as any)("avg_reviews")}</label>
+            <input
+              type="range"
+              className="form-control-range"
+              min="0"
+              max="5"
+              step="0.1"
+              value={reviews}
+              onChange={(e) =>
+                handleFilterChange("reviews", Number(e.target.value))
+              }
+            />
+            <span>{reviews}</span>
+          </div>
         </div>
       </div>
 
-      <div className="form-group">
-        <label>{(t as any)("avg_likes")}</label>
-        <div className="d-flex align-items-center">
-          <input
-            type="range"
-            min="0"
-            max="5"
-            step="0.1"
-            value={likes}
-            onChange={(e) =>
-              handleFilterChange("likes", Number(e.target.value))
-            }
-            className="form-control-range"
-          />
-          <span className="ml-2">{likes}</span>
-        </div>
+      <div className="form-group mb-4">
+        <label htmlFor="language-select">{(t as any)("SelectLanguage")}</label>
+        <select
+          id="language-select"
+          className="form-control"
+          onChange={(e) => {
+            changeLanguage(e.target.value);
+            reloadBooks();
+          }}
+          defaultValue={i18n.language}
+        >
+          <option value="en">English</option>
+          <option value="ru">Русский</option>
+          <option value="ja">日本語</option>
+        </select>
       </div>
 
-      <div className="form-group">
-        <label>{(t as any)("avg_reviews")}</label>
-        <div className="d-flex align-items-center">
-          <input
-            type="range"
-            min="0"
-            max="5"
-            step="0.1"
-            value={reviews}
-            onChange={(e) =>
-              handleFilterChange("reviews", Number(e.target.value))
-            }
-            className="form-control-range"
-          />
-          <span className="ml-2">{reviews}</span>
-        </div>
-      </div>
-      <button onClick={() => changeLanguage("en")}>English</button>
-      <button onClick={() => changeLanguage("ru")}>Русский</button>
-      <button onClick={() => changeLanguage("ja")}>日本語</button>
+      {/* Book Table Section */}
       <div
         className="table-responsive"
         id="book-table"
@@ -143,6 +172,8 @@ const UserList: React.FC = () => {
               <th>{(t as any)("table.publisher")}</th>
               <th>{(t as any)("table.likes")}</th>
               <th>{(t as any)("table.reviews")}</th>
+              <th>{(t as any)("table.genre")}</th>
+              <th>{(t as any)("table.releaseDate")}</th>
             </tr>
           </thead>
           <tbody>
@@ -156,10 +187,12 @@ const UserList: React.FC = () => {
                   <td>{book.publisher}</td>
                   <td>{book.likes}</td>
                   <td>{book.reviews}</td>
+                  <td>{book.genre}</td>
+                  <td>{book.releaseDate}</td>
                 </tr>
                 {expandedBookIndex === index && (
                   <tr>
-                    <td colSpan={7}>
+                    <td colSpan={9}>
                       <ExpandedBookDetails book={book} />
                     </td>
                   </tr>
@@ -175,4 +208,5 @@ const UserList: React.FC = () => {
     </div>
   );
 };
+
 export default UserList;

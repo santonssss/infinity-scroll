@@ -11,6 +11,8 @@
     "authors": "Authors",
     "publisher": "Publisher",
     "likes": "Likes",
-    "reviews": "Reviews"
+    "reviews": "Reviews",
+    "genre": "genre",
+    "releaseDate": "releaseDate"
   }
 }
