@@ -9,8 +9,8 @@ interface Book {
   title: string;
   authors: string;
   publisher: string;
-  likes: string; // Представляем как строку
-  reviews: string; // Представляем как строку (для отображения количества)
+  likes: string;
+  reviews: string;
   genre: string;
   releaseDate: string;
 }
@@ -77,7 +77,6 @@ const UserList: React.FC = () => {
     <div className="container my-5">
       <h1 className="text-center mb-4">{(t as any)("book_list")}</h1>
 
-      {/* Filters Section */}
       <div className="row mb-4">
         <div className="col-md-4">
           <div className="form-group">
@@ -145,7 +144,6 @@ const UserList: React.FC = () => {
         </select>
       </div>
 
-      {/* Book Table Section */}
       <div
         className="table-responsive"
         id="book-table"
